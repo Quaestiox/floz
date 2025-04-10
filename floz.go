@@ -9,13 +9,14 @@ import (
 type ReqHandler func(handler *Ctx)
 
 type Floz struct {
-	scope  *Scope
 	server *Server
+	config *Config
 }
 
 func New() *Floz {
 	return &Floz{
 		server: newServer(),
+		config: NewConfig(),
 	}
 }
 
@@ -24,7 +25,7 @@ func (floz *Floz) Server() *Server {
 }
 
 func (floz *Floz) Handle(c *fasthttp.RequestCtx) {
-	ctx := NewCtx(c)
+	ctx := NewCtx(floz, c)
 	floz.server.handle(ctx)
 }
 

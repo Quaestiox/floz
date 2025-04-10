@@ -7,7 +7,7 @@ type Scope struct {
 
 func (s *Scope) Scope(prefix string) *Scope {
 	return &Scope{
-		prefix: s.prefix + prefix,
+		prefix: prefix,
 		server: s.server,
 	}
 }
