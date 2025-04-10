@@ -2,7 +2,6 @@ package floz
 
 import (
 	"fmt"
-	"github.com/valyala/fasthttp"
 	"strings"
 )
 
@@ -10,12 +9,20 @@ type Server struct {
 	router map[string]*trie
 }
 
-func (s *Server) Handle(ctx *fasthttp.RequestCtx) {
-	node, _ := s.getRoute(string(ctx.Method()), string(ctx.Path()))
+func (s *Server) Scope(prefix string) *Scope {
+	return &Scope{
+		prefix: prefix,
+		server: s,
+	}
+}
+
+func (s *Server) handle(ctx *Ctx) {
+	node, paras := s.getRoute(ctx.Method(), ctx.Path())
 	if node != nil {
+		ctx.paras = paras
 		node.handler(ctx)
 	} else {
-		fmt.Fprintf(ctx, "404 NOT FOUND:%p", ctx.URI())
+		fmt.Fprintf(ctx.fasthttp, "404 NOT FOUND:%p", ctx.URI())
 	}
 }
 

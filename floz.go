@@ -6,9 +6,10 @@ import (
 	"os"
 )
 
-type ReqHandler func(handler *fasthttp.RequestCtx)
+type ReqHandler func(handler *Ctx)
 
 type Floz struct {
+	scope  *Scope
 	server *Server
 }
 
@@ -22,8 +23,13 @@ func (floz *Floz) Server() *Server {
 	return floz.server
 }
 
+func (floz *Floz) Handle(c *fasthttp.RequestCtx) {
+	ctx := NewCtx(c)
+	floz.server.handle(ctx)
+}
+
 func (floz *Floz) Run(port string) {
-	err := fasthttp.ListenAndServe(port, floz.Server().Handle)
+	err := fasthttp.ListenAndServe(port, floz.Handle)
 	if err != nil {
 		fmt.Println("[error]")
 		os.Exit(1)
