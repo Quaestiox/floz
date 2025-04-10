@@ -29,4 +29,16 @@ func TestTree(t *testing.T) {
 	if node == nil {
 		t.Fatal()
 	}
+
+	tree.insert("/a/:name/b", []string{"a", ":name", "b"}, nil)
+	node2 := tree.search([]string{"a", "jack", "b"})
+	if node2 == nil {
+		t.Fatal()
+	}
+
+	tree.insert("/a/*file/p", []string{"a", "*file", "p"}, nil)
+	node3 := tree.search([]string{"a", "ooo", "p"})
+	if node3 == nil {
+		t.Fatal()
+	}
 }
