@@ -2,11 +2,14 @@
 
 An efficient and easy-to-use web framework based on [fasthttp](https://github.com/valyala/fasthttp) for Go.
 
+### Install
+```shell
+go get github/Quaestiox@v0.1.0
+```
+
 ### QuickStart
 
 ```go
-
-
 func main() {
     app := floz.New()
     app.Server().Get("/", handleRoot).
@@ -25,7 +28,6 @@ func handleRoot(ctx *floz.Ctx) {
 func handle1(ctx *floz.Ctx) {
     ctx.String("hello world!")
 }
-
 ```
 
 ### Use Middleware
