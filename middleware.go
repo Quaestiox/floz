@@ -4,7 +4,7 @@ type MiddleWare struct {
 	list []ReqHandler
 }
 
-func newMiddleWare(mws ...ReqHandler) *MiddleWare {
+func NewMW(mws ...ReqHandler) *MiddleWare {
 	list := make([]ReqHandler, 0)
 	for _, mw := range mws {
 		list = append(list, mw)

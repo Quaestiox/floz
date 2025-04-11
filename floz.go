@@ -17,7 +17,7 @@ type Floz struct {
 func New(middleware ...*MiddleWare) *Floz {
 	var mw *MiddleWare
 	if len(middleware) == 0 {
-		mw = newMiddleWare()
+		mw = NewMW()
 	} else {
 		mw = middleware[0]
 	}

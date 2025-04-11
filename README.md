@@ -5,27 +5,38 @@ An efficient and easy-to-use web framework based on [fasthttp](https://github.co
 ### QuickStart
 
 ```go
+
+
 func main() {
     app := floz.New()
     app.Server().Get("/", handleRoot).
-        Scope("/v1").Get("/hello", handle1).
-        Scope("/v2").Get("/world", handle2)
+        Scope("/v1").Get("/hello", handle1)
 
     app.Run(":8788")
 }
 
 func handleRoot(ctx *floz.Ctx) {
-    ctx.String("here is the root")
-}
-
-func handle1(ctx *floz.Ctx) {
     ctx.JSON(floz.H{
         "username": "x",
         "password": "123456",
     })
 }
 
-func handle2(ctx *floz.Ctx) {
+func handle1(ctx *floz.Ctx) {
     ctx.String("hello world!")
 }
+
+```
+
+### Use Middleware
+
+You can use Wrap() to add middleware for Floz or Scopes.<br>
+Here are two ways to add middleware for Floz application.
+
+```go
+app := floz.New().Wrap(Log)
+```
+```go
+mw  := floz.NewMW(Log)
+app := floz.New(mw)
 ```

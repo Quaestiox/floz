@@ -6,7 +6,7 @@ import (
 )
 
 func TestNewMW(t *testing.T) {
-	mw := newMiddleWare(test1, test2)
+	mw := NewMW(test1, test2)
 	ctx := &Ctx{}
 	mw.list[0](ctx)
 	mw.list[1](ctx)

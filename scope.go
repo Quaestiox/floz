@@ -10,7 +10,7 @@ func (s *Scope) Scope(prefix string, middlewares ...ReqHandler) *Scope {
 	sp := &Scope{
 		prefix: s.prefix + prefix,
 		server: s.server,
-		mw:     newMiddleWare(middlewares...),
+		mw:     NewMW(middlewares...),
 	}
 	s.server.scopes = append(s.server.scopes, sp)
 	return sp
