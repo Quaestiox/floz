@@ -3,13 +3,15 @@ package floz
 import "github.com/valyala/fasthttp"
 
 type Ctx struct {
-	floz     *Floz
-	fasthttp *fasthttp.RequestCtx
-	paras    map[string]string
+	floz       *Floz
+	fasthttp   *fasthttp.RequestCtx
+	paras      map[string]string
+	handler    []ReqHandler
+	handlerIdx int
 }
 
 func NewCtx(floz *Floz, ctx *fasthttp.RequestCtx) *Ctx {
-	return &Ctx{floz, ctx, make(map[string]string)}
+	return &Ctx{floz, ctx, make(map[string]string), make([]ReqHandler, 0), -1}
 }
 
 func (c *Ctx) Para(key string) string {
@@ -68,4 +70,12 @@ func (c *Ctx) Status(code int) *Ctx {
 
 func (c *Ctx) Set(key, v string) {
 	c.fasthttp.Response.Header.Set(key, v)
+}
+
+func (c *Ctx) Next() {
+	c.handlerIdx++
+	l := len(c.handler)
+	for ; c.handlerIdx < l; c.handlerIdx++ {
+		c.handler[c.handlerIdx](c)
+	}
 }

@@ -3,13 +3,17 @@ package floz
 type Scope struct {
 	server *Server
 	prefix string
+	mw     *MiddleWare
 }
 
-func (s *Scope) Scope(prefix string) *Scope {
-	return &Scope{
-		prefix: prefix,
+func (s *Scope) Scope(prefix string, middlewares ...ReqHandler) *Scope {
+	sp := &Scope{
+		prefix: s.prefix + prefix,
 		server: s.server,
+		mw:     newMiddleWare(middlewares...),
 	}
+	s.server.scopes = append(s.server.scopes, sp)
+	return sp
 }
 
 func (s *Scope) addRoute(method, path string, handler ReqHandler) *Scope {
@@ -24,4 +28,9 @@ func (s *Scope) Get(path string, handler ReqHandler) *Scope {
 
 func (s *Scope) Post(path string, handler ReqHandler) *Scope {
 	return s.addRoute("POST", path, handler)
+}
+
+func (s *Scope) Wrap(middlewares ...ReqHandler) *Scope {
+	s.mw.addMW(middlewares...)
+	return s
 }

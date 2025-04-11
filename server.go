@@ -7,13 +7,16 @@ import (
 
 type Server struct {
 	router map[string]*trie
+	scopes []*Scope
 }
 
 func (s *Server) Scope(prefix string) *Scope {
-	return &Scope{
+	sp := &Scope{
 		prefix: prefix,
 		server: s,
 	}
+	s.scopes = append(s.scopes, sp)
+	return sp
 }
 
 func (s *Server) handle(ctx *Ctx) {
@@ -22,13 +25,15 @@ func (s *Server) handle(ctx *Ctx) {
 		ctx.paras = paras
 		node.handler(ctx)
 	} else {
-		fmt.Fprintf(ctx.fasthttp, "404 NOT FOUND:%p", ctx.URI())
+		fmt.Fprintf(ctx.fasthttp, "404 NOT FOUND:%s", ctx.URI())
 	}
+	ctx.Next()
 }
 
 func newServer() *Server {
 	return &Server{
 		router: map[string]*trie{},
+		scopes: []*Scope{},
 	}
 }
 
