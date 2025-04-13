@@ -11,6 +11,9 @@ type Server struct {
 }
 
 func (s *Server) Scope(prefix string) *Scope {
+	if prefix == "/" {
+		prefix = ""
+	}
 	sp := &Scope{
 		prefix: prefix,
 		server: s,

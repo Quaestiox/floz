@@ -7,6 +7,9 @@ type Scope struct {
 }
 
 func (s *Scope) Scope(prefix string, middlewares ...ReqHandler) *Scope {
+	if prefix == "/" {
+		return s
+	}
 	sp := &Scope{
 		prefix: s.prefix + prefix,
 		server: s.server,
