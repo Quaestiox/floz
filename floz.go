@@ -2,11 +2,10 @@ package floz
 
 import (
 	"fmt"
+	"github.com/Quaestiox/floz/middleware/rescue"
 	"github.com/valyala/fasthttp"
 	"os"
 )
-
-type ReqHandler func(handler *Ctx)
 
 type Floz struct {
 	server *Server
@@ -21,6 +20,15 @@ func New(middleware ...*MiddleWare) *Floz {
 	} else {
 		mw = middleware[0]
 	}
+	return &Floz{
+		server: newServer(),
+		config: NewConfig(),
+		mw:     mw,
+	}
+}
+
+func Default() *Floz {
+	mw := NewMW(rescue.New())
 	return &Floz{
 		server: newServer(),
 		config: NewConfig(),
