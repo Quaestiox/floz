@@ -23,10 +23,10 @@ func (s *Server) Scope(prefix string) *Scope {
 }
 
 func (s *Server) handle(ctx *Ctx) {
-	node, paras := s.getRoute(ctx.Method(), ctx.Path())
-	if node != nil {
+	n, paras := s.getRoute(ctx.Method(), ctx.Path())
+	if n != nil {
 		ctx.paras = paras
-		node.handler(ctx)
+		ctx.handler = append(ctx.handler, n.handler)
 	} else {
 		fmt.Fprintf(ctx.fasthttp, "404 NOT FOUND:%s", ctx.URI())
 	}

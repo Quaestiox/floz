@@ -2,7 +2,6 @@ package floz
 
 import (
 	"fmt"
-	"github.com/Quaestiox/floz/middleware/rescue"
 	"github.com/valyala/fasthttp"
 	"os"
 )
@@ -28,7 +27,7 @@ func New(middleware ...*MiddleWare) *Floz {
 }
 
 func Default() *Floz {
-	mw := NewMW(rescue.New())
+	mw := NewMW(MWRecover())
 	return &Floz{
 		server: newServer(),
 		config: NewConfig(),
