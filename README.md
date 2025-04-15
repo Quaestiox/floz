@@ -2,12 +2,12 @@
 
 An efficient and easy-to-use web framework based on [fasthttp](https://github.com/valyala/fasthttp) for Go.
 
-### Install
+## Install
 ```shell
-go get github/Quaestiox@v0.1.0
+go get github/Quaestiox@latest
 ```
 
-### QuickStart
+## QuickStart
 
 ```go
 func main() {
@@ -30,7 +30,7 @@ func handle1(ctx *floz.Ctx) {
 }
 ```
 
-### Middleware
+## Middleware
 
 You can use Wrap() to add middleware for Floz or Scopes.<br>
 Here are two ways to add middleware for Floz application.
@@ -43,7 +43,7 @@ mw  := floz.NewMW(Log)
 app := floz.New(mw)
 ```
 
-### Data
+## Data
 
 The Data is shared by all routes and scopes in the application.
 
