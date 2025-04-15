@@ -4,7 +4,7 @@ An efficient and easy-to-use web framework based on [fasthttp](https://github.co
 
 ## Install
 ```shell
-go get github/Quaestiox/floz@latest
+go get github.com/Quaestiox/floz@latest
 ```
 
 ## QuickStart
