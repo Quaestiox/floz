@@ -11,7 +11,7 @@ go get github/Quaestiox@v0.1.0
 
 ```go
 func main() {
-    app := floz.New()
+    app := floz.Default()
     app.Server().Get("/", handleRoot).
         Scope("/v1").Get("/hello", handle1)
 
@@ -30,7 +30,7 @@ func handle1(ctx *floz.Ctx) {
 }
 ```
 
-### Use Middleware
+### Middleware
 
 You can use Wrap() to add middleware for Floz or Scopes.<br>
 Here are two ways to add middleware for Floz application.
@@ -42,3 +42,30 @@ app := floz.New().Wrap(Log)
 mw  := floz.NewMW(Log)
 app := floz.New(mw)
 ```
+
+### Data
+
+The Data is shared by all routes and scopes in the application.
+
+example:
+```go
+type State struct {
+    name  string
+    count int
+}
+
+func main() {
+    app := floz.Default().Data(State{name: "try", count: 0})
+    app.Server().Get("/data", handleData)
+    app.Run(":8788")
+}
+
+func handleData(ctx *floz.Ctx) {
+    data := ctx.Data().(State)
+    ctx.JSON(floz.H{
+        "appName": data.name,
+        "count":   data.count,
+    })
+}
+```
+

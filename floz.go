@@ -10,6 +10,7 @@ type Floz struct {
 	server *Server
 	config *Config
 	mw     *MiddleWare
+	data   any
 }
 
 func New(middleware ...*MiddleWare) *Floz {
@@ -26,6 +27,7 @@ func New(middleware ...*MiddleWare) *Floz {
 	}
 }
 
+// Default Floz has default middleware: recover.
 func Default() *Floz {
 	mw := NewMW(MWRecover())
 	return &Floz{
@@ -37,6 +39,11 @@ func Default() *Floz {
 
 func (floz *Floz) Server() *Server {
 	return floz.server
+}
+
+func (floz *Floz) Data(data any) *Floz {
+	floz.data = data
+	return floz
 }
 
 func (floz *Floz) Handle(c *fasthttp.RequestCtx) {

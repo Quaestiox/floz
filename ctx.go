@@ -8,10 +8,18 @@ type Ctx struct {
 	paras      map[string]string
 	handler    []ReqHandler
 	handlerIdx int
+	data       any
 }
 
 func NewCtx(floz *Floz, ctx *fasthttp.RequestCtx) *Ctx {
-	return &Ctx{floz, ctx, make(map[string]string), make([]ReqHandler, 0), -1}
+	return &Ctx{
+		floz:       floz,
+		fasthttp:   ctx,
+		paras:      make(map[string]string),
+		handler:    make([]ReqHandler, 0),
+		handlerIdx: -1,
+		data:       floz.data,
+	}
 }
 
 func (c *Ctx) Para(key string) string {
@@ -78,4 +86,8 @@ func (c *Ctx) Next() {
 	for ; c.handlerIdx < l; c.handlerIdx++ {
 		c.handler[c.handlerIdx](c)
 	}
+}
+
+func (c *Ctx) Data() any {
+	return c.data
 }
